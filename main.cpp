@@ -9,6 +9,14 @@ void On_btnOk_Click()
 	MessageBox(GetHWnd(),L"Halo", L"Hello", MB_OK);
 }
 
+void On_btnInsert_Click() {
+	MessageBox(GetHWnd(), L"Halo", L"Hello", MB_OK);
+}
+
+void On_btnDelete_Click() {
+	MessageBox(GetHWnd(), L"Halo", L"Hello", MB_OK);
+}
+
 void connectNode(Node& a, Node& b) {
 	Point from = a.getBottomPoint();
 	Point to = b.getTopPoint();
@@ -25,6 +33,7 @@ int main()
 	// 从code的计算结果中初始化一颗二叉树
 	int date = 0;
 	int rank = 0;
+	int tans = 0;
 	Node* root = new Node(date++, rank++);
 	// y axis of root node
 	// x axis of root node
@@ -44,25 +53,41 @@ int main()
 	
 
 	// 初始化绘图窗口
-	
 	initgraph(width, height);
 	// 获得窗口句柄
 	HWND hWnd = GetHWnd();
 	// 使用 Windows API 修改窗口名称
 	SetWindowText(hWnd, L"Dynamic Tree");
-
+	// 初始化， 背景色, 文字颜色
 	setbkcolor(0xeeeeee);
 	cleardevice();
 	settextcolor(BLACK);
 
-	setlinecolor(BLACK);
-	line(width * 0.8, 0, width * 0.8, height);
-	
-	//outtextxy(50, 55, L"用户名：");
-	//outtextxy(50, 105, L"密　码：");*/
+	// draw show window contains tan value, insert button, delete button with text style Consolas
+	settextstyle(16, 0, _T("Consolas"));
+	EasyButton insertButton;
+	EasyButton deleteButton;
+	int showWindowW = 160;
+	int showWindowH = 90;
+	// draw the windon with color 0xB0C4DE
+	setfillcolor(0xB0C4DE);
+	fillrectangle(width - showWindowW, 0, width, showWindowH);
+	// draw insert button 
+	wchar_t insert_text[7] = L"INSERT";
+	insertButton.Create(width - showWindowW * 0.9, showWindowH / 2 * 1.1, width - showWindowW / 2 * 1.1, showWindowH * 0.9, insert_text, On_btnInsert_Click);
+	// draw delete button
+	wchar_t delete_text[7] = L"DELETE";
+	insertButton.Create(width - showWindowW / 2 * 0.9, showWindowH / 2 * 1.1, width - showWindowW * 0.1, showWindowH * 0.9, delete_text, On_btnDelete_Click);
+	// draw tan value
+	wchar_t tans_text[256];
+	swprintf_s(tans_text, L"tans: %d", tans);
+	RECT r = { width - showWindowW , 0, width - 1, showWindowH/2 -1 };
+	drawtext(tans_text, &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
+	// 设置线段宽度和颜色
 	wchar_t tmp[] = L"abc";
 	setlinestyle(PS_SOLID, 1);
+	setlinecolor(BLACK);
 	//btnRank.Create(100, 100, 200, 200, tmp, On_btnOk_Click);
 	/*node.Create(300, 300, 100, 50, 1, 2, tmp ,On_btnOk_Click);
 	node2.Create(500, 100, 30, 40, 3, 4, tmp, On_btnOk_Click);
@@ -79,23 +104,22 @@ int main()
 
 	// 画圆
 	//circle(320, 240, r);
-	bool binput = true;
-	ExMessage msg;
-	int fromX = 0, fromY = 0;
-	int toX, toY;
 
-	while (binput) {
-		while (binput && peekmessage(&msg, EM_MOUSE | EM_CHAR, false)) {
-			if (msg.message == WM_LBUTTONDOWN){
-				fromX = msg.x; fromY = msg.y;
-			}else if (msg.message == WM_LBUTTONUP) {
-				toX = msg.x; toY = msg.y;
-				outtextxy(fromX, fromY, L"from");
-				outtextxy(toX, toY, L"to");
-				tree.moveTo(msg.x, msg.y);
-				tree.draw();
-			}
-			peekmessage(NULL, EM_MOUSE | EM_CHAR);
+	ExMessage msg;
+	while (true)
+	{
+		msg = getmessage(EM_MOUSE);			// 获取消息输入
+
+		if (msg.message == WM_LBUTTONDOWN)
+		{
+			// 判断控件
+			if (txtName.Check(msg.x, msg.y))	txtName.OnMessage();
+
+			// 判断控件
+			if (txtPwd.Check(msg.x, msg.y))		txtPwd.OnMessage();
+
+			// 判断控件
+			if (btnOK.Check(msg.x, msg.y))		btnOK.OnMessage();
 		}
 	}
 	// 按任意键退出
