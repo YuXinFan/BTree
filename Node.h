@@ -3,6 +3,10 @@
 #include <conio.h>
 #include "Point.h"
 #include <cmath>
+
+extern int WIDTH;
+extern int HEIGHT;
+
 // Ê÷½Úµã£º¾ØÐÎ
 class Node
 {
@@ -92,6 +96,13 @@ public:
 	}
 };
 
+// y axis of root node
+	// x axis of root node
+	// half of one node height
+	// half of one node width
+	// interval height of two near level (centra to centra)
+	// interval width of two near node in same level (centra to centra) of the leaf level with max depth
+
 class Tree
 {	
 public:
@@ -121,14 +132,14 @@ public:
 		
 	}
 
-	int height(Node* node)
+	int getHeight(Node* node)
 	{
 		if (node == NULL)
 			return 0;
 		else {
 			/* compute the height of each subtree */
-			int lheight = height(node->left);
-			int rheight = height(node->right);
+			int lheight = getHeight(node->left);
+			int rheight = getHeight(node->right);
 
 			/* use the larger one */
 			if (lheight > rheight) {
@@ -140,12 +151,10 @@ public:
 		}
 	}
 	void draw() {
-		clearrectangle(
-			0,
-			0,
-			960*0.8-1,
-			540
-		);
+		clearrectangle(0, 0, WIDTH-160-1, HEIGHT);
+		clearrectangle(WIDTH -160-1, 90+1, 960 , HEIGHT);
+
+		h = getHeight(node);
 		BeginBatchDraw();
 		drawInorder(node, 1, 1);
 		EndBatchDraw();

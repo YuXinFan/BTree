@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="TreeBase.cpp" />
+    <ClCompile Include="TreeBase.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.h" />
   </ItemGroup>
@@ -147,6 +147,7 @@
     <ClInclude Include="EasyButton.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="stdc++.h" />
+    <ClInclude Include="Tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

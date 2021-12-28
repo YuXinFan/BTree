@@ -18,22 +18,25 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Node.h">
-      <Filter>源文件</Filter>
+    <ClCompile Include="TreeBase.h">
+      <Filter>头文件</Filter>
     </ClCompile>
-    <ClCompile Include="TreeBase.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="Node.h">
+      <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Tree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="EasyButton.h">
-      <Filter>源文件</Filter>
+      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
-      <Filter>源文件</Filter>
+      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="stdc++.h">
-      <Filter>源文件</Filter>
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
