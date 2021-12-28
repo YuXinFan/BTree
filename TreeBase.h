@@ -14,7 +14,8 @@ extern int dep[N];
 extern int son[N][2];
 extern int Rt;
 
-extern int sz[N], val[N];
+extern int sz[N];
+extern int val[N];
 extern int cc;
 extern int fa[N];
 

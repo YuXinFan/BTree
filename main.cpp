@@ -7,7 +7,6 @@
 
 int tans = 0;
 int sz[1010100];
-int val[1010100];
 int cc;
 int fa[1010100];
 

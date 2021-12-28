@@ -152,7 +152,7 @@ public:
 	}
 	void draw() {
 		clearrectangle(0, 0, WIDTH-160-1, HEIGHT);
-		clearrectangle(WIDTH -160-1, 90+1, 960 , HEIGHT);
+		clearrectangle(WIDTH -160-1, 90+1, WIDTH , HEIGHT);
 
 		h = getHeight(node);
 		BeginBatchDraw();

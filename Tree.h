@@ -3,6 +3,7 @@
 #include "Node.h"
 int son[1010100][2];
 int dep[1010100];
+int val[1010100];
 int Rt;
 
 
@@ -14,9 +15,9 @@ int lfsr_generator() {
 	auto ret = lfsr;
 	return (lfsr ^= lfsr << 13, lfsr ^= lfsr >> 17, lfsr ^= lfsr << 5, ret);
 }
-tuple<int, int> command() {
+int state = 0;
+tuple<int, int> command(int &state) {
 	auto imm = lfsr_generator();
-	static int state = 0;
 	auto p = double(lfsr_generator() & 0x7fffffff) / INT32_MAX;
 	for (int i = 0; i < 4; i++)
 		if ((p -= P[state % 4][i]) < 0) {
@@ -38,6 +39,7 @@ void DynTreeMain() {
 		dep[i] = 0;
 		fa[i] = 0;
 	}
+	state = 0;
 	dep[0] = -1;
 	tans = 0;
 	int m = P1[0]; lfsr = P1[1]; A = P1[2]; B = P1[3]; C = P1[4];
@@ -46,7 +48,7 @@ void DynTreeMain() {
 		for (int j = 0; j < 4; j++) P[i][j] = P2[i * 4 + j];
 	for (int i = 1; i <= m; i++) {
 		int op, imm;
-		tie(op, imm) = command();
+		tie(op, imm) = command(state);
 		if (op == 0) avl.insert(imm);
 		if (op == 1) avl.remove(avl.kth(imm % avl.size()));
 		if (op == 2) tans ^= avl.rank(imm);
@@ -67,11 +69,11 @@ void Create(Node* t, int x) {
 	int l = son[x][0];
 	int r = son[x][1];
 	if (l != 0) {
-		t->left = new Node(l, dep[l]);
+		t->left = new Node(val[l], avl.rank(val[l]));
 		Create(t->left, l);
 	}
 	if (r != 0) {
-		t->right = new Node(r, dep[r]);
+		t->right = new Node(val[r], avl.rank(val[r]));
 		Create(t->right, r);
 	}
 }
@@ -79,9 +81,9 @@ void Create(Node* t, int x) {
 Tree *Base2GUI() {
 	// crete root
 	//avl.rank()
-	Node* root = new Node(Rt, dep[Rt]);
+	Node* root = new Node(val[Rt], avl.rank(val[Rt]));
 	Create(root, Rt);
-	Tree* t = new Tree(root, WIDTH / 2, 50, 20, 30, 55, 75);
+	Tree* t = new Tree(root, WIDTH / 2, 50, 20, 50, 55, 105);
 	return t;
 }
 
