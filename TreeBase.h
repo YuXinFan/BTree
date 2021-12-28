@@ -1,12 +1,22 @@
+#pragma once
 #ifndef TREE_BASE_
 #define TREE_BASE_
 
 #include "stdc++.h"
+#include "Global.h"
+
 using namespace std;
+
 #define ls son[x][0]
 #define rs son[x][1]
 #define N 1010100
-int sz[N], val[N], son[N][2], Rt, cc, dep[N], fa[N];
+extern int dep[N];
+extern int son[N][2];
+extern int Rt;
+
+extern int sz[N], val[N];
+extern int cc;
+extern int fa[N];
 
 typedef struct AVL {
 	AVL() { dep[0] = -1; }
@@ -115,7 +125,7 @@ typedef struct AVL {
 	void test() {}
 #undef N
 } AVL;
-AVL avl;
+extern AVL avl;
 
 //struct Node_AVL {
 //	int element, rank;
@@ -176,65 +186,6 @@ AVL avl;
 //}
 
 /* PLEASE DO NOT CHANGE BELOW*/
-int A, B, C, lfsr;
-double P[4][4];
-int lfsr_generator() {
-	auto ret = lfsr;
-	return (lfsr ^= lfsr << 13, lfsr ^= lfsr >> 17, lfsr ^= lfsr << 5, ret);
-}
-tuple<int, int> command() {
-	auto imm = lfsr_generator();
-	static int state = 0;
-	auto p = double(lfsr_generator() & 0x7fffffff) / INT32_MAX;
-	for (int i = 0; i < 4; i++)
-		if ((p -= P[state % 4][i]) < 0) {
-			state += 4 - state % 4 + i;
-			break;
-		}
-	return tuple<int, int>(state % 4, (imm * A + state * B + C) & 0x7fffffff);
-}
-/* PLEASE DO NOT CHANGE ABOVE*/
-void DynTreeMain() {
-	// 
-	extern int P1[5];
-	extern float P2[4 * 4];
-	extern int tans;
 
-	// clean for multi time use
-	for (int i = 0; i < 1010100; i++) {
-		sz[i] = 0;
-		val[i] = 0;
-		son[i][0] = 0;  son[i][1] = 0;
-		Rt = 0;
-		cc = 0;
-		dep[i] = 0;
-		fa[i] = 0;
-	}
-	dep[0] = -1;
-	tans = 0;
-	
-
-	int m = P1[0]; lfsr = P1[1]; A = P1[2]; B = P1[3]; C = P1[4];
-
-	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 4; j++) P[i][j] = P2[i*4+j];
-	for (int i = 1; i <= m; i++) {
-		int op, imm;
-		tie(op, imm) = command();
-		if (op == 0) avl.insert(imm);
-		if (op == 1) avl.remove(avl.kth(imm % avl.size()));
-		if (op == 2) tans ^= avl.rank(imm);
-		if (op == 3) tans ^= avl.kth(imm % avl.size());
-		/*Tree_AVL node_tree;
-		Node_AVL* now;
-		node_tree.Create(Rt, now);
-		cout << "node tree" << endl;
-		node_tree.print_tree(node_tree.root);
-		cout << endl << "array tree" << endl;
-		tree_print(Rt);
-		cout << endl;*/
-	}
-	//cout << tans << "\n";
-}
 
 #endif // !TREE_BASE_

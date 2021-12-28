@@ -1,10 +1,68 @@
 #pragma once
 //#include "TreeBase.h"
 #include "Node.h"
-extern int son[1010100][2];
-extern int dep[1010100];
-extern int Rt;
-//extern AVL avl;
+int son[1010100][2];
+int dep[1010100];
+int Rt;
+
+
+AVL avl;
+
+int A, B, C, lfsr;
+double P[4][4];
+int lfsr_generator() {
+	auto ret = lfsr;
+	return (lfsr ^= lfsr << 13, lfsr ^= lfsr >> 17, lfsr ^= lfsr << 5, ret);
+}
+tuple<int, int> command() {
+	auto imm = lfsr_generator();
+	static int state = 0;
+	auto p = double(lfsr_generator() & 0x7fffffff) / INT32_MAX;
+	for (int i = 0; i < 4; i++)
+		if ((p -= P[state % 4][i]) < 0) {
+			state += 4 - state % 4 + i;
+			break;
+		}
+	return tuple<int, int>(state % 4, (imm * A + state * B + C) & 0x7fffffff);
+}
+/* PLEASE DO NOT CHANGE ABOVE*/
+void DynTreeMain() {
+
+	// clean for multi time use
+	for (int i = 0; i < 1010100; i++) {
+		sz[i] = 0;
+		val[i] = 0;
+		son[i][0] = 0;  son[i][1] = 0;
+		Rt = 0;
+		cc = 0;
+		dep[i] = 0;
+		fa[i] = 0;
+	}
+	dep[0] = -1;
+	tans = 0;
+	int m = P1[0]; lfsr = P1[1]; A = P1[2]; B = P1[3]; C = P1[4];
+
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++) P[i][j] = P2[i * 4 + j];
+	for (int i = 1; i <= m; i++) {
+		int op, imm;
+		tie(op, imm) = command();
+		if (op == 0) avl.insert(imm);
+		if (op == 1) avl.remove(avl.kth(imm % avl.size()));
+		if (op == 2) tans ^= avl.rank(imm);
+		if (op == 3) tans ^= avl.kth(imm % avl.size());
+		/*Tree_AVL node_tree;
+		Node_AVL* now;
+		node_tree.Create(Rt, now);
+		cout << "node tree" << endl;
+		node_tree.print_tree(node_tree.root);
+		cout << endl << "array tree" << endl;
+		tree_print(Rt);
+		cout << endl;*/
+	}
+	//cout << tans << "\n";
+}
+
 void Create(Node* t, int x) {
 	int l = son[x][0];
 	int r = son[x][1];
@@ -22,7 +80,6 @@ Tree *Base2GUI() {
 	// crete root
 	//avl.rank()
 	Node* root = new Node(Rt, dep[Rt]);
-	
 	Create(root, Rt);
 	Tree* t = new Tree(root, WIDTH / 2, 50, 20, 30, 55, 75);
 	return t;

@@ -3,9 +3,9 @@
 #include <conio.h>
 #include "Point.h"
 #include <cmath>
+#include "Global.h"
+#include "TreeBase.h"
 
-extern int WIDTH;
-extern int HEIGHT;
 
 // Ê÷½Úµã£º¾ØÐÎ
 class Node

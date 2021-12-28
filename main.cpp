@@ -4,17 +4,12 @@
 #include "EasyButton.h"
 #include "Tree.h"
 #include <iostream>
-// set graph size
-int WIDTH = 1800;
-int HEIGHT = 1000;
 
-// tans
 int tans = 0;
-
-// input
-int P1[5];
-// matrix of input
-float P2[4 * 4];
+int sz[1010100];
+int val[1010100];
+int cc;
+int fa[1010100];
 
 // button
 EasyButton startButton;
@@ -23,7 +18,6 @@ EasyButton startButton;
 Tree* T;
 
 // declare 
-extern void DynTreeMain();
 void drawShowWindow();
 
 void calculateTree() {
