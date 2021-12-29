@@ -129,6 +129,7 @@ public:
 		nodeW = W;
 		intervalH = interH;
 		intervalW = interW;
+		h = -1;
 		
 	}
 
@@ -151,13 +152,14 @@ public:
 		}
 	}
 	void draw() {
-		clearrectangle(0, 0, WIDTH-160-1, HEIGHT);
-		clearrectangle(WIDTH -160-1, 90+1, WIDTH , HEIGHT);
+		if (h == -1) {
+			h = getHeight(node);
 
-		h = getHeight(node);
-		BeginBatchDraw();
+		}
+		clearrectangle(0, 0, WIDTH - 160 - 1, HEIGHT);
+		clearrectangle(WIDTH - 160 - 1, 90 + 1, WIDTH, HEIGHT);
 		drawInorder(node, 1, 1);
-		EndBatchDraw();
+		
 	}
 	void drawInorder(Node *cur, int height, int nth)
 	{

@@ -68,8 +68,10 @@ void On_btnStart_Click() {
 	DynTreeMain();
 	// 从code的计算结果中初始化一颗二叉树
 	T = Base2GUI();
+	BeginBatchDraw();
 	T->draw();
 	drawShowWindow();
+	EndBatchDraw();
 }
 
 void On_btnInsert_Click() {
@@ -161,8 +163,11 @@ int main()
 		else if (msg.message == WM_MOUSEMOVE) {
 			if (LB_DOWN) {
 				T->moveTo(T->rootX + (msg.x - last.x), T->rootY + (msg.y - last.y));
+				BeginBatchDraw();
 				T->draw();
 				drawShowWindow();
+				FlushBatchDraw();
+				EndBatchDraw();
 				last.x = msg.x; last.y = msg.y;
 			}
 		}
