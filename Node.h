@@ -177,22 +177,77 @@ public:
 		int total_width = num_interval * interval_width;
 		int nth_interval = nth - pow(2, height - 1);
 		int X = rootX - total_width / 2 + nth_interval * interval_width;
-		cur->Create(X,Y,nodeW, nodeH, info, NULL);
-		cur->Show();
-
+		if (X >= -intervalW && X <= WIDTH + intervalW
+			&& Y >= -intervalH && Y <= HEIGHT + intervalH) {
+			cur->Create(X, Y, nodeW, nodeH, info, NULL);
+			cur->Show();
+		}
+		Point from = Point{ X, Y + nodeH };
 		if (cur->left) {
-			Point from = cur->getBottomPoint();
-			Point to = cur->left->getTopPoint();
-			line(from.x, from.y, to.x, to.y);
+			Y = rootY + (height)*intervalH;
+			num_interval = pow(2, (height)) - 1;
+			interval_width = intervalW * pow(2, h - height - 1);
+			total_width = num_interval * interval_width;
+			nth_interval = nth * 2 - pow(2, height);
+			X = rootX - total_width / 2 + nth_interval * interval_width;
+			Point to = Point{ X, Y - nodeH };
+			if (to.x >= 0 && to.x <= WIDTH 
+				&& to.y >= 0 && to.y <= HEIGHT ) {
+				line(from.x, from.y, to.x, to.y);
+			}
+			else if (from.x >= 0 && from.x <= WIDTH
+				&& from.y >= 0 && from.y <= HEIGHT) {
+				line(from.x, from.y, to.x, to.y);
+			}
+			else {
+				bool topline =    max(from.x, to.x) < 0     || max(from.y, to.y) < 0      || WIDTH < min(from.x, to.x) || 0 < min(from.y, to.y);
+				bool bottomline = max(from.x, to.x) < 0     || max(from.y, to.y) < HEIGHT || WIDTH < min(from.x, to.x) || HEIGHT < min(from.y, to.y);
+				bool leftline =   max(from.x, to.x) < 0     || max(from.y, to.y) < 0      || 0 < min(from.x, to.x)     || HEIGHT < min(from.y, to.y);
+				bool rightline =  max(from.x, to.x) < WIDTH || max(from.y, to.y) < 0      || WIDTH < min(from.x, to.x) || HEIGHT < min(from.y, to.y);
+				if (!(topline || bottomline || leftline || rightline)) {
+					;
+				}
+				else {
+					line(from.x, from.y, to.x, to.y);
+				}
+
+			}
+			
 		}
 		/* now recur on right child */
 		drawInorder(cur->right, height + 1, nth * 2 + 1);
-		
+
 		if (cur->right) {
-			Point from = cur->getBottomPoint();
-			Point to = cur->right->getTopPoint();
-			line(from.x, from.y, to.x, to.y);
+			Y = rootY + (height)*intervalH;
+			num_interval = pow(2, (height)) - 1;
+			interval_width = intervalW * pow(2, h - height - 1);
+			total_width = num_interval * interval_width;
+			nth_interval = nth * 2 + 1 - pow(2, height);
+			X = rootX - total_width / 2 + nth_interval * interval_width;
+			Point to = Point{ X, Y - nodeH };
+			if (to.x >= 0 && to.x <= WIDTH
+				&& to.y >= 0 && to.y <= HEIGHT) {
+				line(from.x, from.y, to.x, to.y);
+			}
+			else if (from.x >= 0 && from.x <= WIDTH
+				&& from.y >= 0 && from.y <= HEIGHT) {
+				line(from.x, from.y, to.x, to.y);
+			}
+			else {
+				bool topline = max(from.x, to.x) < 0 || max(from.y, to.y) < 0 || WIDTH < min(from.x, to.x) || 0 < min(from.y, to.y);
+				bool bottomline = max(from.x, to.x) < 0 || max(from.y, to.y) < HEIGHT || WIDTH < min(from.x, to.x) || HEIGHT < min(from.y, to.y);
+				bool leftline = max(from.x, to.x) < 0 || max(from.y, to.y) < 0 || 0 < min(from.x, to.x) || HEIGHT < min(from.y, to.y);
+				bool rightline = max(from.x, to.x) < WIDTH || max(from.y, to.y) < 0 || WIDTH < min(from.x, to.x) || HEIGHT < min(from.y, to.y);
+				if (!(topline || bottomline || leftline || rightline)) {
+					;
+				}
+				else {
+					line(from.x, from.y, to.x, to.y);
+				}
+
+			}
 		}
+		
 	}
 
 	void moveTo(int x, int y) {
