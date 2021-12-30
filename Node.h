@@ -177,9 +177,11 @@ public:
 		int total_width = num_interval * interval_width;
 		int nth_interval = nth - pow(2, height - 1);
 		int X = rootX - total_width / 2 + nth_interval * interval_width;
+		wchar_t val_str[256];
+		swprintf_s(val_str, L"%d", height-1);
 		if (X >= -intervalW && X <= WIDTH + intervalW
 			&& Y >= -intervalH && Y <= HEIGHT + intervalH) {
-			cur->Create(X, Y, nodeW, nodeH, info, NULL);
+			cur->Create(X, Y, nodeW, nodeH, val_str, NULL);
 			cur->Show();
 		}
 		Point from = Point{ X, Y + nodeH };
